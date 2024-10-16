@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://i.imgur.com/ZAp9GVZ.png" />
+    <link rel="stylesheet" href="https://intellx.in/static/fonts/stylesheet.css"/>
+    <style type="text/css">* {font-family: 'Aeonik'!important}</style>
+    <title>Applicants Data | The Eye</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #c7c7c7;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .neumorphic-card {
+            background: #2b2b2b;
+            border-radius: 15px;
+            box-shadow: 10px 10px 20px #141414, -10px -10px 20px #3c3c3c;
+            padding: 30px;
+            max-width: 80%;
+            margin: auto;
+        }
+
+        .neumorphic-card select, .neumorphic-card label, .dataTables_info, .paginate_button  {
+            margin-right: 20px;
+            background-color: #2b2b2b;
+            border: none;
+            color: #c7c7c7!important;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: inset 5px 5px 10px #141414, inset -5px -5px 10px #3c3c3c;
+            outline: none;
+        }
+
+        table.dataTable, .sorting_1 {
+            background-color: #1e1e1e!important;
+            border-radius: 15px;
+            border: none;
+        }
+
+        table.dataTable th, table.dataTable td, tbody, .sorting_1  {
+            color: #c7c7c7!important;
+            background-color: #1e1e1e!important;
+            border-bottom: 1px solid #3c3c3c!important;
+        }
+
+        table.dataTable thead th {
+            background-color: #3c3c3c;
+        }
+
+        table.dataTable tbody tr:hover {
+            background-color: #3c3c3c;
+        }
+
+        .checkbox-wrapper-12 {
+            position: relative;
+        }
+
+        .checkbox-wrapper-12 > svg {
+            position: absolute;
+            top: -130%;
+            left: -170%;
+            width: 110px;
+            pointer-events: none;
+        }
+
+        .checkbox-wrapper-12 * {
+            box-sizing: border-box;
+        }
+
+        .checkbox-wrapper-12 input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .checkbox-wrapper-12 input[type="checkbox"]:focus {
+            outline: 0;
+        }
+
+        .checkbox-wrapper-12 .cbx {
+            width: 24px;
+            height: 24px;
+            top: calc(50vh - 12px);
+            left: calc(50vw - 12px);
+        }
+
+        .checkbox-wrapper-12 .cbx input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #8b8b8b;
+            border-radius: 50%;
+            background-color: #2b2b2b;
+            box-shadow: inset 5px 5px 10px #141414, inset -5px -5px 10px #3c3c3c;
+        }
+
+        .checkbox-wrapper-12 .cbx label {
+            width: 24px;
+            height: 24px;
+            background: none;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-filter: url("#goo-12");
+            filter: url("#goo-12");
+            transform: translate3d(0, 0, 0);
+            pointer-events: none;
+        }
+
+        .checkbox-wrapper-12 .cbx svg {
+            position: absolute;
+            top: 5px;
+            left: 4px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .checkbox-wrapper-12 .cbx svg path {
+            stroke: #c7c7c7;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 19;
+            stroke-dashoffset: 19;
+            transition: stroke-dashoffset 0.3s ease;
+            transition-delay: 0.2s;
+        }
+
+        .checkbox-wrapper-12 .cbx input:checked + label {
+            animation: splash-12 0.6s ease forwards;
+        }
+
+        .checkbox-wrapper-12 .cbx input:checked + label + svg path {
+            stroke-dashoffset: 0;
+        }
+
+        @keyframes splash-12 {
+            40% {
+                background: #866efb;
+                box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+            }
+            100% {
+                background: #866efb;
+                box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+            }
+        }
+
+        .dataTables_length, #applicants-table_filter {
+            margin-bottom: 30px;
+        }
+
+        .dataTables_length > label, #applicants-table_filter > label {
+
+            box-shadow: none!important;
+        }
+
+         @keyframes glow {
+            0% {
+                filter: drop-shadow(0 0 10px rgba(254, 176, 70, 0));
+            }
+            100% {
+                filter: drop-shadow(0 0 20px rgba(254, 176, 70, 1));
+            }
+        }
+    </style>
+</head>
+<body onload="checkScreenSize();">
+
+    <img src="https://i.imgur.com/ZAp9GVZ.png" style="position: fixed; top: 2.5%; left:auto; right: auto; animation: glow 2s infinite alternate; filter: drop-shadow(0 0 20px rgba(171, 205, 221, 0)); width: 75%; text-align:center; max-width:150px; z-index: -1000;">
+
+    <div class="neumorphic-card" id="neumorphic-card">
+
+        <table id="applicants-table" class="display dataTable">
+            <thead>
+                <tr>
+                    <th>S #</th>
+                    <th>Name</th>
+                    <th>Roll #</th>
+                    <th>Email</th>
+                    <th>Experience</th>
+                    <th>Phone #</th>
+                    <th>Stream</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for applicant in applicants %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ applicant.name }}</td>
+                    <td>{{ applicant.roll_number | upper }}</td>
+                    <td>{{ applicant.email }}</td>
+                    <td>{{ applicant.experience }}</td>
+                    <td>{{ applicant.phone }}</td>
+                    <td>{{ applicant.stream | upper }}</td> 
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#applicants-table').DataTable({
+                paging: false,
+                select: true,
+                buttons: [
+                    'copy', 'excel', 'pdf', 'print'
+                ],
+                dom: 'Bfrtip'
+            });
+        });
+    </script>
+    <script>
+        function checkScreenSize() {
+            if (window.innerWidth < 1024) {
+                document.getElementById('neumorphic-card').style.display = 'none'; // Clear all existing content
+                try{
+                    document.getElementById('warnMsg').remove();
+                } catch(e){
+                    console.log('');
+                }
+                let warningMessage = document.createElement('div');
+                warningMessage.id = 'warnMsg'
+                warningMessage.innerText = 'Your screen size is not supported, view on desktop';
+                document.body.appendChild(warningMessage);
+            } else {
+                document.getElementById('neumorphic-card').style.display = 'block';
+                try{
+                    document.getElementById('warnMsg').remove();
+                } catch(e){
+                    console.log('');
+                }
+            }
+        }
+
+        // Check on window resize
+        window.addEventListener('resize', checkScreenSize);
+    </script></body>
+</html>
