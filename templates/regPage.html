@@ -1,12 +1,36 @@
-2<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://i.imgur.com/ZAp9GVZ.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    <link rel="icon" href="https://i.imgur.com/ZAp9GVZ.png" />
     <title>HIDDENX CTF ⓧ THE EYE</title>
     <link rel="stylesheet" href="static/font.css"/>
-    <style type="text/css">* {font-family: 'Replica'!important} </style>
+    <style type="text/css">* {font-family: 'Replica'!important}</style>
+    <style>
+        .video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: scale(1.1);
+            object-fit: cover;
+        }
+        
+        /* Fallback background color */
+        #ytbg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: -3;
+        }
+    </style>
     <link rel="stylesheet" href="static/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,13 +52,13 @@
                 <br/><br/><br/>
                 <ul class="event-details">
                     <li>
-                        <span>??.12.2024</span>
-                        <span>FRIDAY</span>
+                        <span>13.11.2024</span>
+                        <span>WEDNESDAY</span>
                         <span>50 PARTICIPANTS</span>
                     </li>
                 </ul>
                 <p class="masterclass-info">
-                    The HiddenX Cybersecurity event will take place on Friday, <span style='font-size: 80%;font-family: "Roboto Mono", monospace;'>&LT;FIND THE DATE BY HACKING THIS WEBSITE&GT;</span>, from 4:30 to 6:30 PM, designed as a Capture The Flag (CTF) event focusing on social engineering and cryptography concepts. This exciting competition is open to all students from PSG College of Technology, expecting participation across various departments and years.<br/><br/><hr/><br/>
+                    The HiddenX Cybersecurity event will take place on Wednesday, <span>13 November 2024</span>, from 4:30 to 6:30 PM, designed as a Capture The Flag (CTF) event focusing on social engineering and cryptography concepts. This exciting competition is open to all students from PSG College of Technology, expecting participation across various departments and years.<br/><br/><hr/><br/>
                     Participants will be secretly assigned to one of two teams, Team X or Team Z, fostering an environment of collaboration and deception. Throughout the event, attendees will engage in challenges that require them to navigate hidden complexities, such as decoy flags and misinformation, using skills in cryptography, phishing, and password cracking.
                 </p>
             </section>
@@ -48,7 +72,8 @@
                     </div>
                     <div class="input-container">
                         <input name="roll_number" class="form-input" type="text" placeholder="ROLL #*">
-                    </div><div class="input-container">
+                    </div>
+                    <div class="input-container">
                         <input name="email" class="form-input" type="text" placeholder="PERSONAL EMAIL">
                         <div class="info">This is a required field for first year students.</div>
                     </div>
@@ -91,7 +116,7 @@
                     <h2>ABOUT</h2>
                     <h1>HIDDENX</h1>
                     <p>
-                        HiddenX is an engaging Cybersecurity CTF event set to take place on <?>, 2024, from 4:30 to 6:30 P.M. at PSG College of Technology. With an anticipated participation of 50 students across all departments and years, this event will immerse participants in the intricate worlds of social engineering and cryptography. Organized by a dedicated team, including Neelesh Padmanabh, Trisha Janath, Akhil Ramalingam, Atul Krishnaa, and Thrisha Ravikumar, HiddenX introduces a unique team dynamic where participants are secretly assigned to either Team X or Team Z, fostering an atmosphere of suspense and strategy. Participants will tackle various challenges, including cryptography puzzles and social engineering tasks, while navigating deception and misinformation tactics to uncover hidden complexities. The scoring system is designed to maintain intrigue, revealing only team scores throughout the competition, culminating in a final reveal of individual performance and team rankings. By fostering collaboration and emphasizing the importance of trust and misdirection, HiddenX promises to be an educational and thrilling experience for all involved.
+                        HiddenX is an engaging Cybersecurity CTF event set to take place on <?>, 2024, from 4:30 to 6:30 P.M. at PSG College of Technology. With an anticipated participation of 50 students across all departments and years, this event will immerse participants in the intricate worlds of social engineering and cryptography. Organized by a dedicated team, HiddenX introduces a unique team dynamic where participants are secretly assigned to either Team X or Team Z, fostering an atmosphere of suspense and strategy. Participants will tackle various challenges, including cryptography puzzles and social engineering tasks, while navigating deception and misinformation tactics to uncover hidden complexities. The scoring system is designed to maintain intrigue, revealing only team scores throughout the competition, culminating in a final reveal of individual performance and team rankings. By fostering collaboration and emphasizing the importance of trust and misdirection, HiddenX promises to be an educational and thrilling experience for all involved.
                     </p>
                 </div>
             </div>
@@ -100,15 +125,15 @@
             <div class="footer">
                 <p>FOR QUESTIONS CONTACT /23Z241@PSGTECH.AC.IN</p>
                 <div class="footer-links">
-                    <a href="#">INSTAGRAM</a> /
-                    <a href="#">LINKEDIN</a> /
-                    <a href="#">WEBSITE</a>
+                    <a href="https://www.instagram.com/theeye.network" target = "_blank">INSTAGRAM</a> /
+                    <a href="https://www.linkedin.com/company/theeye-csea/" target="_new">LINKEDIN</a> /
+                    <a href="https://cseatheeye.com" target="_new">WEBSITE</a>
                 </div>
             </div>
 
         </div>
-    </div>
-    <div id="ytbg" data-youtube="https://www.youtube.com/watch?v=Ps-0f0K6izM" style="z-index: -3;transform: scale(1.1);"></div>
+        </div>
+        <div id="ytbg" data-youtube="https://www.youtube.com/watch?v=Ps-0f0K6izM" style="z-index: -3;transform: scale(1.1);">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://raw.githubusercontent.com/stamat/youtube-background/master/jquery.youtubebackground.js"></script>
     <script>
@@ -124,8 +149,8 @@
             videoID = videoID.substring(0, ampersandPosition); // Remove any additional parameters
         }
 
-        // Create an iframe for the YouTube video using the embed URL
-        const embedURL = `https://www.youtube.com/embed/${videoID}?autoplay=1&mute=1&loop=1&playlist=${videoID}`;
+       // Create an iframe for the YouTube video using the embed URL
+const embedURL = `https://www.youtube.com/embed/${videoID}?autoplay=1&mute=1&loop=1&playlist=${videoID}&controls=0&showinfo=0&modestbranding=1&rel=0`;
         
         const iframe = document.createElement('iframe');
         iframe.src = embedURL;
