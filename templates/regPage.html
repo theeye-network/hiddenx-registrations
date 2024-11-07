@@ -92,8 +92,11 @@
                         <div class="info">Preferably connected to WhatsApp. Please only type 10 continuous digits, like "9444511430".</div>
                     </div>
                     <div class="input-container">
-                        <input name="stream" class="form-input" type="text" placeholder="STREAM">
-                        <div class="info">Full-Form of your Stream, like "Computer Science & Engineering", "Information Technology", etc.</div>
+                        <select name="stream" class="form-input">
+                        <option value="" disabled selected>CHOOSE DEPARTMENT</option>
+                        <option value="CSE">Computer Science and Engineering</option>
+                        <option value="CSE AIML>Computer Science and Engineering (AIML)</option>
+                        </select>
                     </div>
                     <div style="display: flex;">
                         <p style="color: #D3E228;text-transform: uppercase;" id="submitted-btn"></p>
