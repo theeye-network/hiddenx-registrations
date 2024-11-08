@@ -211,11 +211,15 @@ const embedURL = `https://www.youtube.com/embed/${videoID}?autoplay=1&mute=1&loo
                     data: $(this).serialize(),
                     success: function(response) {
                         // Handle success response
-                        $submittedBtn.text("Submitted");
+                        $submittedBtn.text(response.response);
                     },
-                    error: function() {
+                    error: function(response) {
                         // Handle error response
-                        $submittedBtn.text("Error Submitting. Please contact POC via email as in footer.");
+                        if (response.response) {
+                            $submittedBtn.text(response.response);
+                        } else {
+                            $submittedBtn.text("Error Submitting. Please contact POC via email as in footer.");
+                        }
                     }
                 });
             });
