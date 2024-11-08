@@ -92,8 +92,11 @@
                         <div class="info">Preferably connected to WhatsApp. Please only type 10 continuous digits, like "9444511430".</div>
                     </div>
                     <div class="input-container">
-                        <input name="stream" class="form-input" type="text" placeholder="STREAM">
-                        <div class="info">Full-Form of your Stream, like "Computer Science & Engineering", "Information Technology", etc.</div>
+                        <select name="stream" class="form-input">
+                        <option value="" disabled selected>CHOOSE DEPARTMENT</option>
+                        <option value="CSE">Computer Science and Engineering</option>
+                        <option value="CSE AIML">Computer Science and Engineering (AIML)</option>
+                        </select>
                     </div>
                     <div style="display: flex;">
                         <p style="color: #D3E228;text-transform: uppercase;" id="submitted-btn"></p>
@@ -123,7 +126,7 @@
             <BR/>
 
             <div class="footer">
-                <p>FOR QUESTIONS CONTACT /23Z241@PSGTECH.AC.IN</p>
+                <p>FOR QUESTIONS CONTACT /23Z241@PSGTECH.AC.IN /+91 81484 01083</p>
                 <div class="footer-links">
                     <a href="https://www.instagram.com/theeye.network" target = "_blank">INSTAGRAM</a> /
                     <a href="https://www.linkedin.com/company/theeye-csea/" target="_new">LINKEDIN</a> /
@@ -133,7 +136,6 @@
 
         </div>
         </div>
-        <div id="ytbg" data-youtube="https://www.youtube.com/watch?v=Ps-0f0K6izM" style="z-index: -3;transform: scale(1.1);">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://raw.githubusercontent.com/stamat/youtube-background/master/jquery.youtubebackground.js"></script>
     <script>
@@ -209,11 +211,15 @@ const embedURL = `https://www.youtube.com/embed/${videoID}?autoplay=1&mute=1&loo
                     data: $(this).serialize(),
                     success: function(response) {
                         // Handle success response
-                        $submittedBtn.text("Submitted");
+                        $submittedBtn.text(response.response);
                     },
-                    error: function() {
+                    error: function(response) {
                         // Handle error response
-                        $submittedBtn.text("Error Submitting. Please contact POC via email as in footer.");
+                        if (response.response) {
+                            $submittedBtn.text(response.response);
+                        } else {
+                            $submittedBtn.text("Error Submitting. Please contact POC via email as in footer.");
+                        }
                     }
                 });
             });
