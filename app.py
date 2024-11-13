@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient, errors
+from bson.objectid import ObjectId
 from pymongo.server_api import ServerApi
 import os
 
@@ -101,8 +102,45 @@ def registration():
 @app.route('/registrations')
 def registrations():
     applicants = [i for i in list(hiddenXregs.find()) if i.get("name")]
-    print(applicants)
     return render_template('registrations.html', applicants=applicants)
+
+@app.route('/registrations/json', methods=['GET'])
+def get_all_registrations_json():
+    try:
+        # Fetch all applicants and their showup status
+        applicants = hiddenXregs.find()
+        applicants_list = [
+            {
+                "id": str(applicant["_id"]),
+                "name": applicant.get("name"),
+                "roll_number": applicant.get("roll_number"),
+                "showup": applicant.get("showup", False)
+            }
+            for applicant in applicants
+        ]
+        return jsonify(applicants_list)
+    except Exception as e:
+        return {"response": f"Error: {str(e)}"}, 500
+
+@app.route('/showup/<_id>', methods=['POST', 'DELETE'])
+def toggle_showup(_id):
+    try:
+        record_id = ObjectId(_id)
+        
+        if request.method == 'POST':
+            result = hiddenXregs.update_one({'_id': record_id}, {'$set': {'showup': True}})
+            if result.modified_count == 0:
+                return {"response": "Already marked as showup."}, 200
+            return {"response": "Showup marked successfully."}
+        
+        elif request.method == 'DELETE':
+            result = hiddenXregs.update_one({'_id': record_id}, {'$set': {'showup': False}})
+            if result.modified_count == 0:
+                return {"response": "Already unmarked as showup."}, 200
+            return {"response": "Showup unmarked successfully."}
+        
+    except Exception as e:
+        return {"response": f"Error: {str(e)}"}, 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

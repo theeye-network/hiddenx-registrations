@@ -17,12 +17,12 @@
     <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.css">
     <style>
         body {
             background-color: #1e1e1e;
             color: #c7c7c7;
             font-family: 'Arial', sans-serif;
-            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -158,6 +158,60 @@
             stroke-dashoffset: 0;
         }
 
+        .checkbox-wrapper-63 input[type="checkbox"] {
+        visibility: hidden;
+        display: none;
+        }
+
+        .checkbox-wrapper-63 *,
+        .checkbox-wrapper-63 ::after,
+        .checkbox-wrapper-63 ::before {
+        box-sizing: border-box;
+        }
+
+        /* The switch - the box around the slider */
+        .checkbox-wrapper-63 .switch {
+        font-size: 1rem;
+        position: relative;
+        display: inline-block;
+        width: 4em;
+        height: 2em;
+        }
+
+        /* The slider */
+        .checkbox-wrapper-63 .slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: #2f2f2f;
+        transition: 0.4s;
+        border-radius: 0.5em;
+        box-shadow: 0 0.2em #dfd9d9;
+        }
+
+        .checkbox-wrapper-63 .slider:before {
+        position: absolute;
+        content: "";
+        height: 1.5em;
+        width: 1.4em;
+        border-radius: 0.3em;
+        left: 0.3em;
+        bottom: 0.7em;
+        background-color: lightsalmon;
+        transition: 0.4s;
+        box-shadow: 0 0.4em #4B4848;
+        }
+
+        .checkbox-wrapper-63 .slider:hover::before {
+        box-shadow: 0 0.2em #4B4848;
+        bottom: 0.5em;
+        }
+
+        .checkbox-wrapper-63 input:checked + .slider::before {
+        transform: translateX(2em);
+        background: lightgreen;
+        }
+
         @keyframes splash-12 {
             40% {
                 background: #866efb;
@@ -188,9 +242,11 @@
         }
     </style>
 </head>
+
+
 <body onload="checkScreenSize();">
 
-    <img src="https://i.imgur.com/ZAp9GVZ.png" style="position: fixed; top: 2.5%; left:auto; right: auto; animation: glow 2s infinite alternate; filter: drop-shadow(0 0 20px rgba(171, 205, 221, 0)); width: 75%; text-align:center; max-width:150px; z-index: -1000;">
+    <img src="https://i.imgur.com/ZAp9GVZ.png" style="position: fixed;z-index: 999; top: 2.5%; left:auto; right: auto; animation: glow 2s infinite alternate; filter: drop-shadow(0 0 20px rgba(171, 221, 105, 0)); width: 75%; text-align:center; max-width:150px; z-index: -1000;">
 
     <div class="neumorphic-card" id="neumorphic-card">
 
@@ -204,18 +260,27 @@
                     <th>Experience</th>
                     <th>Phone #</th>
                     <th>Stream</th>
+                    <th>Show-Up</th>
                 </tr>
             </thead>
             <tbody>
                 {% for applicant in applicants %}
-                <tr>
+                <tr id="applicant-{{ applicant._id }}">
                     <td>{{ loop.index }}</td>
                     <td>{{ applicant.name }}</td>
                     <td>{{ applicant.roll_number | upper }}</td>
                     <td>{{ applicant.email }}</td>
                     <td>{{ applicant.experience }}</td>
                     <td>{{ applicant.phone }}</td>
-                    <td>{{ applicant.stream | upper }}</td> 
+                    <td>{{ applicant.stream | upper }}</td>
+                    <td id="showup-status-{{ applicant._id }}">
+                        <div class="checkbox-wrapper-63" style="transform:scale(0.5);">
+                          <label class="switch">
+                            <input type="checkbox" id="showup-{{ applicant._id }}" {% if applicant.showup %}checked{% endif %} onclick="toggleShowup('{{ applicant._id }}')">
+                            <span class="slider"></span>
+                          </label>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -259,5 +324,86 @@
 
         // Check on window resize
         window.addEventListener('resize', checkScreenSize);
-    </script></body>
+    </script>
+    <script>
+        // Function to fetch and update all registrations every 2 seconds
+        function updateAllRegistrations() {
+            fetch('/registrations/json')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(applicant => {
+                        const showupCheckbox = document.getElementById(`showup-${applicant.id}`);
+                        if (showupCheckbox) {
+                            const wasChecked = showupCheckbox.checked;
+                            showupCheckbox.checked = applicant.showup;
+
+                            // If the status changed, show a notification
+                            if (wasChecked !== applicant.showup) {
+                                Toastify({
+                                    text: `${applicant.name} has been marked as ${applicant.showup ? 'showup' : 'unmarked'}`,
+                                    duration: 3000
+                                }).showToast();
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching registrations:', error);
+                });
+        }
+
+        // Update the showup status every 2 seconds
+        setInterval(updateAllRegistrations, 2000);
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.js"></script>
+    <script>
+        // Function to handle the checkbox toggle
+        function toggleShowup(applicantId) {
+            var checkbox = document.getElementById('showup-' + applicantId);
+            var isChecked = checkbox.checked;
+            
+            // Set the URL for the POST request based on checkbox status
+            var url = '/showup/' + applicantId;
+            var method = isChecked ? 'POST' : 'DELETE';  // We use DELETE to unmark, if unchecked
+
+            // Send the request to the backend
+            fetch(url, { method: method })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.response === "Showup marked successfully.") {
+                        Toastify({
+                            text: "Marked Showup",
+                            style: {
+                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                            },
+                            duration: 3000
+                        }).showToast();
+                    } else if (data.response === "Showup unmarked successfully.") {
+                        Toastify({
+                            text: "Unmarked Showup",
+                            duration: 3000
+                        }).showToast();
+                    } else {
+                        Toastify({
+                            text: data.response || "An error occurred.",
+                            style: {
+                                background: "linear-gradient(to right, #ff5f6d, #ffc3a0)",
+                            },
+                            duration: 3000
+                        }).showToast();
+                    }
+                })
+                .catch(error => {
+                    Toastify({
+                        text: "Error: " + error.message,
+                        style: {
+                            background: "linear-gradient(to right, #ff5f6d, #ffc3a0)",
+                        },
+                        duration: 3000
+                    }).showToast();
+                });
+        }
+    </script>
+</body>
 </html>

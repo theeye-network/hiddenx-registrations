@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Scanner</title>
+    <!-- Include the ZXing library CDN -->
+    <script src="https://unpkg.com/@zxing/library@0.18.6/dist/index.min.js"></script>
+</head>
+<body>
+    <h1>Scan Barcode to Mark Showup</h1>
+    <video id="preview" width="100%" height="auto"></video>
+    <p id="message"></p>
+
+    <script>
+        let selectedDeviceId;
+        const codeReader = new ZXing.BrowserMultiFormatReader();
+
+        // Initialize the camera and start scanning
+        function startScanner() {
+            codeReader.listVideoInputDevices()
+                .then((videoInputDevices) => {
+                    selectedDeviceId = videoInputDevices[0].deviceId;
+                    codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'preview')
+                        .then(result => {
+                            document.getElementById('message').textContent = `Scanned Roll Number: ${result.text}`;
+                            markShowup(result.text); // Call the API to mark as showup
+                        })
+                        .catch(err => {
+                            document.getElementById('message').textContent = `Error: ${err}`;
+                        });
+                })
+                .catch(err => {
+                    document.getElementById('message').textContent = `Error: ${err}`;
+                });
+        }
+
+        // Call the backend to mark the showup status
+        function markShowup(rollNumber) {
+            fetch(`/showup-by-rollnumber/${rollNumber}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.response === "Showup marked successfully.") {
+                        alert("Marked as Showup!");
+                    } else {
+                        alert(data.response || "An error occurred.");
+                    }
+                })
+                .catch(error => {
+                    alert(`Error: ${error.message}`);
+                });
+        }
+
+        // Start the scanner when the page loads
+        window.onload = startScanner;
+    </script>
+</body>
+</html>

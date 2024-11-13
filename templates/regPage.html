@@ -19,17 +19,6 @@
             transform: scale(1.1);
             object-fit: cover;
         }
-        
-        /* Fallback background color */
-        #ytbg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            z-index: -3;
-        }
     </style>
     <link rel="stylesheet" href="static/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,19 +42,18 @@
                 <ul class="event-details">
                     <li>
                         <span>13.11.2024</span>
-                        <span>WEDNESDAY</span>
-                        <span>50 PARTICIPANTS</span>
+                        <span>WEDNESDAY//TODAY</span>
+                        <span>75 PLAYERS//PARTICIPANTS</span>
                     </li>
                 </ul>
                 <p class="masterclass-info">
-                    The HiddenX Cybersecurity event will take place on Wednesday, <span>13 November 2024</span>, from 4:30 to 6:30 PM, designed as a Capture The Flag (CTF) event focusing on social engineering and cryptography concepts. This exciting competition is open to all students from PSG College of Technology, expecting participation across various departments and years.<br/><br/><hr/><br/>
-                    Participants will be secretly assigned to one of two teams, Team X or Team Z, fostering an environment of collaboration and deception. Throughout the event, attendees will engage in challenges that require them to navigate hidden complexities, such as decoy flags and misinformation, using skills in cryptography, phishing, and password cracking.
+                    The HiddenX Cybersecurity event will take place on Wednesday, <span>13 November 2024</span>, from 4:30 to 6:30 PM, designed as a Capture The Flag (CTF) event focusing on social engineering and cryptography concepts. This exciting competition is open to only Computer Science & Engineering students from PSG College of Technology, expecting participation across various years.
                 </p>
             </section>
             
             <section class="application-form">
                 <span id="reg-form-title">REGISTRATION FORM</span><br/>
-                <p>YOU WILL BE CONTACTED VIA E-MAIL AND WHATSAPP ON YOUR GIVEN PHONE NUMBER REGARDING EVENT UPDATES. FREE ADMISSION. THIS EVENT IS FOR PSG COLLEGE OF TECHNOLOGY STUDENTS ONLY.</p><br/>
+                <p id="reg-form-cap">YOU WILL BE CONTACTED VIA E-MAIL AND WHATSAPP ON YOUR GIVEN PHONE NUMBER REGARDING EVENT UPDATES. FREE ADMISSION. THIS EVENT IS FOR PSG COLLEGE OF TECHNOLOGY - CSE STUDENTS ONLY.</p><br/>
                 <form method="POST" class="application-form" id="application-form">
                     <div class="input-container">
                         <input name="name" class="form-input" type="text" placeholder="FIRST & LAST NAME*">
@@ -137,36 +125,44 @@
         </div>
         </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://raw.githubusercontent.com/stamat/youtube-background/master/jquery.youtubebackground.js"></script>
     <script>
-        const videoElement = $('#ytbg');
-        // Get the YouTube video URL from the data attribute
-        const ytbg = document.getElementById('ytbg');
-        const youtubeURL = ytbg.getAttribute('data-youtube');
-        
-        // Extract the video ID from the YouTube URL
-        const videoID = youtubeURL.split('v=')[1];
-        const ampersandPosition = videoID.indexOf('&');
-        if (ampersandPosition !== -1) {
-            videoID = videoID.substring(0, ampersandPosition); // Remove any additional parameters
-        }
+      // Function to check the time and update the registration text
+      function updateRegistrationStatus() {
+        fetch('https://timeapi.io/api/time/current/zone?timeZone=Asia%2FKolkata')
+          .then(response => response.json())
+          .then(data => {
+            const currentDateTime = new Date(data.datetime);
+            const targetDate = new Date('2024-11-13T00:00:00');
+            
+            // Define 4 PM and 6 PM times on November 13
+            const fourPM = new Date(targetDate);
+            fourPM.setHours(16, 0, 0, 0); // 4 PM
+            const sixPM = new Date(targetDate);
+            sixPM.setHours(18, 0, 0, 0); // 6 PM
+            
+            const titleElement = document.getElementById('reg-form-title');
+            const captionsElement = document.getElementById('reg-form-cap');
+            const regDiv = document.getElementById('application-form');
+            
+            // Check if it's after 6 PM
+            if (currentDateTime >= sixPM) {
+              titleElement.textContent = "REGISTRATIONS CLOSED";
+              regDiv.style.display = "none";
+              captionsElement.style.display = "none";
+            }
+            // Check if it's after 4 PM but before 6 PM
+            else if (currentDateTime >= fourPM) {
+              titleElement.textContent = "ON-SPOT REGISTRATIONS";
+              captionsElement.textContent = "DON'T WORRY IF YOU MISSED REGISTRATION. MEET SOMEONE FROM THE ORGANIZING COMMITTEE AT THE VENUE AND REGISTER HERE TO ADD YOURSELF TO THE LIST.";
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching time:', error);
+          });
+      }
 
-       // Create an iframe for the YouTube video using the embed URL
-const embedURL = `https://www.youtube.com/embed/${videoID}?autoplay=1&mute=1&loop=1&playlist=${videoID}&controls=0&showinfo=0&modestbranding=1&rel=0`;
-        
-        const iframe = document.createElement('iframe');
-        iframe.src = embedURL;
-        iframe.style.position = 'absolute';
-        iframe.style.top = '0';
-        iframe.style.left = '0';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.zIndex = '-2'; // Send it behind other elements
-        iframe.style.border = 'none';
-        iframe.allow = 'autoplay'; // Allow autoplay for the video
-
-        // Append the iframe to the ytbg div
-        ytbg.appendChild(iframe);
+      // Run the function on page load
+      window.onload = updateRegistrationStatus;
     </script>
     <script>
         document.addEventListener('touchmove', function (event) {
